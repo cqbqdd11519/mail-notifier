@@ -1,0 +1,15 @@
+name: mail-send
+image: 172.22.11.2:30500/mail-sender-client:0.0.1
+imagePullPolicy: Always
+env:
+- name: MAIL_FROM
+  value: no-reply-tc@tmax.co.kr
+- name: MAIL_TO
+  value: sunghyun_kim3@tmax.co.kr
+- name: MAIL_SUBJECT
+  value: Test CK2-2
+- name: MAIL_CONTENT
+  value: |
+    Test Content!!!!
+    WOW!!!!!!!
+    HOoooou!!!!!
