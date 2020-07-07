@@ -8,7 +8,7 @@ import (
 	"net/http"
 )
 
-func mailHandler(w http.ResponseWriter, r *http.Request){
+func mailHandler(w http.ResponseWriter, r *http.Request) {
 	req := &mail.SendRequest{}
 	resp := &mail.SendResponse{}
 

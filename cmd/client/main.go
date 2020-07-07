@@ -40,8 +40,8 @@ func main() {
 
 	// Send mail
 	reqMsg := &mail.SendRequest{
-		From: from,
-		To: to,
+		From:    from,
+		To:      to,
 		Subject: subject,
 		Content: content,
 	}
