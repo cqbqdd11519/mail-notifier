@@ -27,3 +27,12 @@ image-server:
 
 image-client:
 	docker build -f build/client/Dockerfile -t $(CLIENT_IMG) .
+
+
+push: push-server push-client
+
+push-server:
+	docker push $(SERVER_IMG)
+
+push-client:
+	docker push $(CLIENT_IMG)
