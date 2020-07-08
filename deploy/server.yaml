@@ -10,23 +10,24 @@ spec:
     metadata:
       labels:
         app: mail-sender
-  containers:
-  - name: sender-server
-    image: 172.22.11.2:30500/mail-sender-server:0.0.1
-    imagePullPolicy: Always
-    env:
-    - name: MAIL_SERVER
-      valueFrom:
-        secretKeyRef:
-          name: mail-sender-cfg
-          key: smtpServer
-    - name: MAIL_USER_NAME
-      valueFrom:
-        secretKeyRef:
-          name: mail-sender-cfg
-          key: smtpUserId
-    - name: MAIL_PASSWORD
-      valueFrom:
-        secretKeyRef:
-          name: mail-sender-cfg
-          key: smtpUserPw
+    spec:
+      containers:
+      - name: sender-server
+        image: 172.22.11.2:30500/mail-sender-server:0.0.1
+        imagePullPolicy: Always
+        env:
+        - name: SMTP_SERVER
+          valueFrom:
+            secretKeyRef:
+              name: mail-sender-cfg
+              key: smtpServer
+        - name: SMTP_USER_NAME
+          valueFrom:
+            secretKeyRef:
+              name: mail-sender-cfg
+              key: smtpUserId
+        - name: SMTP_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mail-sender-cfg
+              key: smtpUserPw

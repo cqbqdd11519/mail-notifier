@@ -1,0 +1,26 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: send-mail
+spec:
+  template:
+    spec:
+      containers:
+        - name: client
+          image: 172.22.11.2:30500/mail-sender-client:0.0.1
+          imagePullPolicy: Always
+          env:
+          - name: MAIL_SERVER
+            value: http://mail-sender.default:9999/
+          - name: MAIL_FROM
+            value: no-reply-tc@tmax.co.kr
+          - name: MAIL_SUBJECT
+            value: Test CK2-2
+          - name: MAIL_CONTENT
+            value: |
+              Test Content!!!!
+              WOW!!!!!!!
+              HOoooou!!!!!
+          - name: appr-shkim-tmax.co.kr
+            value: "sunghyun_kim3@tmax.co.kr"
+      restartPolicy: Never
