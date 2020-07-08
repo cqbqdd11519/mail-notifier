@@ -1,7 +1,7 @@
 package mail
 
 import (
-	"errors"
+	"fmt"
 	"net/smtp"
 	"os"
 	"strconv"
@@ -48,15 +48,12 @@ func serverInfo() (*SmtpInfo, error) {
 	info := &SmtpInfo{}
 
 	// Server URL
-	serverUrl := os.Getenv("MAIL_SERVER")
-	if serverUrl == "" {
-		return nil, errors.New("MAIL_SERVER should be set")
-	}
+	serverUrl := os.Getenv(EnvSmtpServer)
 
 	// Split into hostname, port
 	hosts := strings.Split(serverUrl, ":")
 	if len(hosts) != 2 {
-		return nil, errors.New("MAIL_SERVER(" + serverUrl + ") invalid, it should be [IP]:[PORT] form")
+		return nil, fmt.Errorf("%s(%s) invalid, it should be [IP]:[PORT] form", EnvSmtpServer, serverUrl)
 	}
 
 	info.host = hosts[0]
@@ -67,16 +64,10 @@ func serverInfo() (*SmtpInfo, error) {
 	info.port = port
 
 	// Username
-	info.user = os.Getenv("MAIL_USER_NAME")
-	if info.user == "" {
-		return nil, errors.New("MAIL_USER_NAME should be set")
-	}
+	info.user = os.Getenv(EnvSmtpUser)
 
 	// Password
-	info.password = os.Getenv("MAIL_PASSWORD")
-	if info.password == "" {
-		return nil, errors.New("MAIL_PASSWORD should be set")
-	}
+	info.password = os.Getenv(EnvSmtpPassword)
 
 	return info, nil
 }
