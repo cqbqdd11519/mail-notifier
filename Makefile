@@ -1,6 +1,6 @@
 VERSION ?= 0.0.1
 
-REGISTRY ?= 172.22.11.2:30500
+REGISTRY ?= tmaxcloudck
 
 SERVER_NAME = mail-sender-server
 SERVER_IMG = $(REGISTRY)/$(SERVER_NAME):$(VERSION)
@@ -20,6 +20,7 @@ build-client:
 	CGO_ENABLED=0 go build -o ./bin/server ./cmd/server
 
 
+.PHONY: image image-server image-client
 image: image-server image-client
 
 image-server:
@@ -29,6 +30,7 @@ image-client:
 	docker build -f build/client/Dockerfile -t $(CLIENT_IMG) .
 
 
+.PHONY: push push-server push-client
 push: push-server push-client
 
 push-server:
@@ -36,3 +38,28 @@ push-server:
 
 push-client:
 	docker push $(CLIENT_IMG)
+
+
+.PHONY: test test-verify save-sha-mod compare-sha-mod verify test-unit test-lint
+test: test-verify test-unit test-lint
+
+test-verify: save-sha-mod verify compare-sha-mod
+
+save-sha-mod:
+	$(eval MODSHA=$(shell sha512sum go.mod))
+	$(eval SUMSHA=$(shell sha512sum go.sum))
+
+verify:
+	go mod verify
+
+compare-sha-mod:
+	$(eval MODSHA_AFTER=$(shell sha512sum go.mod))
+	$(eval SUMSHA_AFTER=$(shell sha512sum go.sum))
+	@if [ "${MODSHA_AFTER}" = "${MODSHA}" ]; then echo "go.mod is not changed"; else echo "go.mod file is changed"; exit 1; fi
+	@if [ "${SUMSHA_AFTER}" = "${SUMSHA}" ]; then echo "go.sum is not changed"; else echo "go.sum file is changed"; exit 1; fi
+
+test-unit:
+	go test -v ./pkg/...
+
+test-lint:
+	golangci-lint run ./... -v -E gofmt --timeout 1h0m0s
