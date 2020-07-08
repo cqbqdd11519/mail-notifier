@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
       - name: sender-server
-        image: 172.22.11.2:30500/mail-sender-server:0.0.1
+        image: tmaxcloudck/mail-sender-server:latest
         imagePullPolicy: Always
         env:
         - name: SMTP_SERVER

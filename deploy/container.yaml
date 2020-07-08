@@ -1,5 +1,5 @@
 name: mail-send
-image: 172.22.11.2:30500/mail-sender-client:0.0.1
+image: tmaxcloudck/mail-sender-client:latest
 imagePullPolicy: Always
 env:
 - name: MAIL_SERVER
