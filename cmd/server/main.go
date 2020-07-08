@@ -7,10 +7,17 @@ import (
 
 	"github.com/gorilla/mux"
 
+	"mail-notifier/internal"
 	"mail-notifier/pkg/mail"
 )
 
 func main() {
+	// Env. var. check
+	envs := []string{mail.EnvSmtpServer, mail.EnvSmtpUser, mail.EnvSmtpPassword}
+	if err := internal.CheckEnv(envs); err != nil {
+		log.Fatal(err)
+	}
+
 	router := mux.NewRouter()
 
 	log.Printf("Handler set to %s (%s)\n", mail.ServerPath, mail.ServerMethod)

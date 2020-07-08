@@ -46,6 +46,8 @@ func mailHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	log.Println("Mail sent")
+
 	// Reply
 	resp.Sent = true
 	resp.Message = ""

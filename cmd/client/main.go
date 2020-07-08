@@ -6,36 +6,34 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"strings"
 
+	"mail-notifier/internal"
 	"mail-notifier/pkg/mail"
 )
 
-const (
-	ServiceName = "mail-sender"
-)
-
 func main() {
+	// Check env. var.s
+	envs := []string{mail.EnvMailFrom, mail.EnvMailSubject, mail.EnvMailContent, mail.EnvMailServer}
+	if err := internal.CheckEnv(envs); err != nil {
+		log.Println(err)
+		os.Exit(0)
+	}
+
 	// Parse env. var.s
-	from := os.Getenv("MAIL_FROM")
-	if from == "" {
-		log.Fatal("MAIL_FROM should be set")
+	from := os.Getenv(mail.EnvMailFrom)
+	subject := os.Getenv(mail.EnvMailSubject)
+	content := os.Getenv(mail.EnvMailContent)
+
+	// Read list of 'to' from Env.Var.s
+	var to []string
+	toMap := internal.ParseUserEnv()
+	for _, v := range toMap {
+		to = append(to, v)
 	}
 
-	toRaw := os.Getenv("MAIL_TO")
-	if toRaw == "" {
-		log.Fatal("MAIL_TO should be set")
-	}
-	to := strings.Split(toRaw, ",")
-
-	subject := os.Getenv("MAIL_SUBJECT")
-	if subject == "" {
-		log.Fatal("MAIL_SUBJECT should be set")
-	}
-
-	content := os.Getenv("MAIL_CONTENT")
-	if content == "" {
-		log.Fatal("MAIL_CONTENT should be set")
+	if len(to) == 0 {
+		log.Println("no appr-<userid> environmental variables are found")
+		os.Exit(0)
 	}
 
 	// Send mail
@@ -52,7 +50,7 @@ func main() {
 	}
 
 	client := &http.Client{}
-	req, err := http.NewRequest(mail.ServerMethod, ServiceName, bytes.NewBuffer(msgString))
+	req, err := http.NewRequest(mail.ServerMethod, os.Getenv(mail.EnvMailServer), bytes.NewBuffer(msgString))
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -76,5 +74,5 @@ func main() {
 		log.Fatal(err)
 	}
 
-	log.Printf("Mail sent (%+v)\n", req)
+	log.Printf("Mail sent (%+v)\n", respMsg)
 }
