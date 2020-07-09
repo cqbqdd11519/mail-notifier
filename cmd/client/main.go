@@ -1,14 +1,21 @@
 package main
 
 import (
+	"bufio"
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
+	"strings"
 
 	"mail-notifier/internal"
 	"mail-notifier/pkg/mail"
+)
+
+const (
+	ConfigMapPath string = "/tmp/approvers"
 )
 
 func main() {
@@ -26,13 +33,24 @@ func main() {
 
 	// Read list of 'to' from Env.Var.s
 	var to []string
-	toMap := internal.ParseUserEnv()
-	for _, v := range toMap {
-		to = append(to, v)
+	file, err := os.Open(ConfigMapPath)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer file.Close()
+
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		text := scanner.Text()
+		pair := strings.Split(text, "=")
+		if len(pair) != 2 {
+			log.Fatal(fmt.Errorf("%s is not in <userId>=<email> form", text))
+		}
+		to = append(to, pair[1])
 	}
 
 	if len(to) == 0 {
-		log.Println("no appr-<userid> environmental variables are found")
+		log.Println("no mail receiver is found")
 		os.Exit(0)
 	}
 
