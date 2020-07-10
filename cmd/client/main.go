@@ -15,7 +15,7 @@ import (
 )
 
 const (
-	ConfigMapPath string = "/tmp/approvers"
+	ConfigMapPath string = "/tmp/config/users"
 )
 
 func main() {
