@@ -1,0 +1,11 @@
+apiVersion: tekton.dev/v1beta1
+kind: TaskRun
+metadata:
+  name: example-with-mail-send-run
+  namespace: default
+spec:
+  taskRef:
+    name: example-with-mail-send
+  params:
+  - name: CM_APPROVER_DEV
+    value: approver-dev

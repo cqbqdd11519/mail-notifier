@@ -1,0 +1,30 @@
+apiVersion: tekton.dev/v1alpha1
+kind: Task
+metadata:
+  name: example-with-mail-send
+  namespace: default
+spec:
+  params:
+  - name: CM_APPROVER_DEV
+  steps:
+  - name: mail-1
+    image: tmaxcloudck/mail-sender-client:latest
+    imagePullPolicy: Always
+    env:
+    - name: MAIL_SERVER
+      value: http://mail-sender.default:9999/
+    - name: MAIL_FROM
+      value: no-reply-tc@tmax.co.kr
+    - name: MAIL_SUBJECT
+      value: Approval is requested for CI/CD
+    - name: MAIL_CONTENT
+      value: |
+        Check pipelinerun
+        Approval
+    volumeMounts:
+    - name: mail-list
+      mountPath: /tmp/config
+  volumes:
+  - name: mail-list
+    configMap:
+      name: $(params.CM_APPROVER_DEV)
