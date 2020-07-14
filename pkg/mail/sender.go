@@ -19,22 +19,28 @@ func Send(from string, to []string, subject string, content string) error {
 		return err
 	}
 
-	fromBody := "From: <" + from + ">\r\n"
-
-	toBody := "To: "
+	toStr := ""
 	for i, t := range to {
 		if i != 0 {
-			toBody += ", "
+			toStr += ", "
 		}
-		toBody += "<" + t + ">"
+		toStr += "<" + t + ">"
 	}
-	toBody += "\r\n"
 
-	subjectBody := "Subject: " + subject + "\r\n"
+	header := make(map[string]string)
+	header["From"] = from
+	header["To"] = toStr
+	header["Subject"] = subject
+	header["MIME-Version"] = "1.0"
+	header["Content-Type"] = "text/plain; charset=\"utf-8\""
 
-	msg := []byte(fromBody + toBody + subjectBody + "\r\n" + content)
+	msg := ""
+	for k, v := range header {
+		msg += k + ": " + v + "\r\n"
+	}
+	msg += "\r\n" + content
 
-	return smtp.SendMail(server.host+":"+strconv.Itoa(server.port), auth, from, to, msg)
+	return smtp.SendMail(server.host+":"+strconv.Itoa(server.port), auth, from, to, []byte(msg))
 }
 
 type SmtpInfo struct {
