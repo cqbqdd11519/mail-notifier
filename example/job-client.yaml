@@ -15,12 +15,15 @@ spec:
           - name: MAIL_FROM
             value: no-reply-tc@tmax.co.kr
           - name: MAIL_SUBJECT
-            value: Test CK2-2
+            value: 테스트메일
           - name: MAIL_CONTENT
             value: |
-              Test Content!!!!
-              WOW!!!!!!!
-              HOoooou!!!!!
-          - name: appr-shkim-tmax.co.kr
-            value: "sunghyun_kim3@tmax.co.kr"
+              테스트입니다
+          volumeMounts:
+            - name: mail-list
+              mountPath: /tmp/config
       restartPolicy: Never
+      volumes:
+        - name: mail-list
+          configMap:
+            name: approver-dev
