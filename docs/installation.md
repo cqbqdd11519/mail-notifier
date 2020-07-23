@@ -13,7 +13,7 @@
     SMTP_SERVER=<SMTP Server Address>
     SMTP_USER=<SMTP User ID>
     SMTP_PW=<SMTP User PW>
-    NAMEPSACE=<Namespace the server to be deployed>
+    NAMESPACE=<Namespace the server to be deployed>
     
     curl https://raw.githubusercontent.com/cqbqdd11519/mail-notifier/master/deploy/secret.yaml.template -s | \
     sed "s/<SMTP Address (IP:PORT)>/${SMTP_SERVER}/g" | \
