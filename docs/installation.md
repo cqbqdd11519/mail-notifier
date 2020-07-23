@@ -16,9 +16,9 @@
     NAMESPACE=<Namespace the server to be deployed>
     
     curl https://raw.githubusercontent.com/cqbqdd11519/mail-notifier/master/deploy/secret.yaml.template -s | \
-    sed "s/<SMTP Address (IP:PORT)>/${SMTP_SERVER}/g" | \
-    sed "s/<SMTP User ID>/${SMTP_USER}/g" | \
-    sed "s/<SMTP User PW>/${SMTP_PW}/g" | \
+    sed "s/<SMTP Address (IP:PORT)>/'${SMTP_SERVER}'/g" | \
+    sed "s/<SMTP User ID>/'${SMTP_USER}'/g" | \
+    sed "s/<SMTP User PW>/'${SMTP_PW}'/g" | \
     kubectl apply --namespace ${NAMESPACE} -f -
     ```
 2. Deploy Service/Deployments for mail-sender server
