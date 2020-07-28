@@ -1,0 +1,8 @@
+apiVersion: tekton.dev/v1beta1
+kind: TaskRun
+metadata:
+  name: example-with-mail-send-run-env
+  namespace: default
+spec:
+  taskRef:
+    name: example-with-mail-send-env
