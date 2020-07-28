@@ -14,10 +14,10 @@ all: build
 build: build-server build-client
 
 build-server:
-	CGO_ENABLED=0 go build -o ./bin/client ./cmd/client
+	CGO_ENABLED=0 go build -o ./bin/server ./cmd/server
 
 build-client:
-	CGO_ENABLED=0 go build -o ./bin/server ./cmd/server
+	CGO_ENABLED=0 go build -o ./bin/client ./cmd/client
 
 
 .PHONY: image image-server image-client
