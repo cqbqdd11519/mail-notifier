@@ -33,20 +33,31 @@ func main() {
 
 	// Read list of 'to' from Env.Var.s
 	var to []string
-	file, err := os.Open(ConfigMapPath)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer file.Close()
-
-	scanner := bufio.NewScanner(file)
-	for scanner.Scan() {
-		text := scanner.Text()
-		pair := strings.Split(text, "=")
-		if len(pair) != 2 {
-			log.Fatal(fmt.Errorf("%s is not in <userId>=<email> form", text))
+	if internal.FileExists(ConfigMapPath) {
+		file, err := os.Open(ConfigMapPath)
+		if err != nil {
+			log.Fatal(err)
 		}
-		to = append(to, pair[1])
+		defer file.Close()
+
+		scanner := bufio.NewScanner(file)
+		for scanner.Scan() {
+			text := scanner.Text()
+			pair := strings.Split(text, "=")
+			if len(pair) != 2 {
+				log.Fatal(fmt.Errorf("%s is not in <userId>=<email> form", text))
+			}
+			to = append(to, pair[1])
+		}
+	}
+
+	receiverStr := os.Getenv(mail.EnvMailTo)
+	if receiverStr != "" {
+		receivers := strings.Split(receiverStr, ",")
+		for i := range receivers {
+			receivers[i] = strings.TrimSpace(receivers[i])
+		}
+		to = append(to, receivers...)
 	}
 
 	if len(to) == 0 {
