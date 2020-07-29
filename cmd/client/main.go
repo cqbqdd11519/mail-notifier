@@ -41,13 +41,21 @@ func main() {
 		defer file.Close()
 
 		scanner := bufio.NewScanner(file)
+		// Parse line-separated
 		for scanner.Scan() {
 			text := scanner.Text()
-			pair := strings.Split(text, "=")
-			if len(pair) != 2 {
-				log.Fatal(fmt.Errorf("%s is not in <userId>=<email> form", text))
+
+			// Parse comma-separated
+			userList := strings.Split(text, ",")
+			for i := range userList {
+				userList[i] = strings.TrimSpace(userList[i])
+
+				pair := strings.Split(userList[i], "=")
+				if len(pair) != 2 {
+					log.Fatal(fmt.Errorf("%s is not in <userId>=<email> form", userList[i]))
+				}
+				to = append(to, pair[1])
 			}
-			to = append(to, pair[1])
 		}
 	}
 
