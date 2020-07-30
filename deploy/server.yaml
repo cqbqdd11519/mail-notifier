@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
       - name: sender-server
-        image: tmaxcloudck/mail-sender-server:latest
+        image: tmaxcloudck/mail-sender-server:v0.0.3
         imagePullPolicy: Always
         env:
         - name: SMTP_SERVER
