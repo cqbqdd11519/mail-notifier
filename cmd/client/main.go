@@ -73,12 +73,19 @@ func main() {
 		os.Exit(0)
 	}
 
+	isMailHtml := false
+	isMailHtmlStr := os.Getenv(mail.EnvMailIsHtml)
+	if strings.ToLower(isMailHtmlStr) == "true" {
+		isMailHtml = true
+	}
+
 	// Send mail
 	reqMsg := &mail.SendRequest{
 		From:    from,
 		To:      to,
 		Subject: subject,
 		Content: content,
+		IsHtml:  isMailHtml,
 	}
 
 	msgString, err := json.Marshal(reqMsg)

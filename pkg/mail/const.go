@@ -12,6 +12,7 @@ const (
 	EnvMailTo       = "MAIL_TO"
 	EnvMailSubject  = "MAIL_SUBJECT"
 	EnvMailContent  = "MAIL_CONTENT"
+	EnvMailIsHtml   = "MAIL_IS_HTML"
 	EnvSmtpServer   = "SMTP_SERVER"
 	EnvSmtpUser     = "SMTP_USER_NAME"
 	EnvSmtpPassword = "SMTP_PASSWORD"

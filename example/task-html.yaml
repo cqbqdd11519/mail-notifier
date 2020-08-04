@@ -1,0 +1,24 @@
+apiVersion: tekton.dev/v1alpha1
+kind: Task
+metadata:
+  name: example-with-mail-send-html
+  namespace: default
+spec:
+  steps:
+  - name: mail-1
+    image: 172.22.11.2:30500/mail-sender-client:shkim
+    imagePullPolicy: Always
+    env:
+    - name: MAIL_SERVER
+      value: http://mail-sender.approval-system:9999/
+    - name: MAIL_FROM
+      value: no-reply-tc@tmax.co.kr
+    - name: MAIL_TO
+      value: sunghyun_kim3@tmax.co.kr,cqbqdd11519@gmail.com
+    - name: MAIL_SUBJECT
+      value: Approval is requested for CI/CD
+    - name: MAIL_CONTENT
+      value: |
+        <html><body><h1>Hello World!</h1></body></html>
+    - name: MAIL_IS_HTML
+      value: 'true'

@@ -33,7 +33,7 @@ func mailHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Send mail
-	if err := mail.Send(req.From, req.To, req.Subject, req.Content); err != nil {
+	if err := mail.Send(req.From, req.To, req.Subject, req.Content, req.IsHtml); err != nil {
 		log.Println(err)
 
 		resp.Sent = false

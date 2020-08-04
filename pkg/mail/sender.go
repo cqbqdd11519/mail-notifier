@@ -8,7 +8,7 @@ import (
 	"strings"
 )
 
-func Send(from string, to []string, subject string, content string) error {
+func Send(from string, to []string, subject string, content string, isHtml bool) error {
 	server, err := serverInfo()
 	if err != nil {
 		return err
@@ -27,12 +27,17 @@ func Send(from string, to []string, subject string, content string) error {
 		toStr += "<" + t + ">"
 	}
 
+	cType := "text/plain"
+	if isHtml {
+		cType = "text/html"
+	}
+
 	header := make(map[string]string)
 	header["From"] = from
 	header["To"] = toStr
 	header["Subject"] = subject
 	header["MIME-Version"] = "1.0"
-	header["Content-Type"] = "text/plain; charset=\"utf-8\""
+	header["Content-Type"] = fmt.Sprintf("%s; charset=\"utf-8\"", cType)
 
 	msg := ""
 	for k, v := range header {

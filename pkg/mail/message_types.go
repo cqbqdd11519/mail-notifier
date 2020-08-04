@@ -5,6 +5,7 @@ type SendRequest struct {
 	To      []string `json:"to"`
 	Subject string   `json:"subject"`
 	Content string   `json:"content"`
+	IsHtml  bool     `json:"isHtml"`
 }
 
 type SendResponse struct {
