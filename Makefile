@@ -40,6 +40,17 @@ push-client:
 	docker push $(CLIENT_IMG)
 
 
+.PHONY: push-latest push-server-latest push-client-latest
+push-latest: push-server-latest push-client-latest
+push-server-latest:
+	docker tag $(SERVER_IMG) $(REGISTRY)/$(SERVER_NAME):latest
+	docker push $(REGISTRY)/$(SERVER_NAME):latest
+
+push-client-latest:
+	docker tag $(CLIENT_IMG) $(REGISTRY)/$(CLIENT_NAME):latest
+	docker push $(REGISTRY)/$(CLIENT_NAME):latest
+
+
 .PHONY: test test-verify save-sha-mod compare-sha-mod verify test-unit test-lint
 test: test-verify test-unit test-lint
 
