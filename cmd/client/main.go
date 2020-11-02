@@ -20,7 +20,7 @@ const (
 
 func main() {
 	// Check env. var.s
-	envs := []string{mail.EnvMailFrom, mail.EnvMailSubject, mail.EnvMailContent, mail.EnvMailServer}
+	envs := []string{mail.EnvMailSubject, mail.EnvMailContent, mail.EnvMailServer}
 	if err := internal.CheckEnv(envs); err != nil {
 		log.Println(err)
 		os.Exit(0)

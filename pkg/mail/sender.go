@@ -32,6 +32,10 @@ func Send(from string, to []string, subject string, content string, isHtml bool)
 		cType = "text/html"
 	}
 
+	if from == "" {
+		from = server.user
+	}
+
 	header := make(map[string]string)
 	header["From"] = from
 	header["To"] = toStr
