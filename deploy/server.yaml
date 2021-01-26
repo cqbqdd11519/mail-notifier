@@ -31,3 +31,10 @@ spec:
             secretKeyRef:
               name: mail-sender-cfg
               key: smtpUserPw
+        resources:
+          requests:
+            cpu: 50m
+            memory: 50Mi
+          limits:
+            cpu: 100m
+            memory: 100Mi
